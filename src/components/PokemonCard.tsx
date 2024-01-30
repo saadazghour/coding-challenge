@@ -36,7 +36,7 @@ export const PokemonCard = ({
 
         <button
           onClick={handleClick}
-          className="flex items-center justify-center w-full h-12 gap-2 px-10 py-4 text-base font-semibold text-center text-white transition duration-500 ease-in-out transform bg-blue-500 rounded-b-lg saad rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="flex mt-6 items-center justify-center w-full h-12 gap-2 px-10 py-4 text-base font-semibold text-center text-white transition duration-500 ease-in-out transform bg-blue-500 rounded-b-lg saad rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           <BoltIcon />
           View more
