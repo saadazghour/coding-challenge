@@ -21,7 +21,7 @@ function App() {
     }
   }, [currentPage, dispatch]);
 
-  // console.log(pokemonList, status);
+  console.log(pokemonList, status);
 
   const fetchNextPage = () => {
     if (status !== "loading") {
@@ -34,8 +34,8 @@ function App() {
   return (
     <div className="App">
       <Pokedex
+        modalOpen={modalOpen}
         setModal={setModalOpen}
-        // setPokemonData={handleSetPokemonData}
         pokemonList={pokemonList}
         fetchNextPage={fetchNextPage}
       />
