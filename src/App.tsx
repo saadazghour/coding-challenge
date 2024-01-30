@@ -21,7 +21,7 @@ function App() {
     }
   }, [currentPage, dispatch]);
 
-  console.log(pokemonList, status);
+  // console.log(pokemonList, status);
 
   const fetchNextPage = () => {
     if (status !== "loading") {
