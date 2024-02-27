@@ -13,30 +13,32 @@ import { fetchPokemon } from "./fetchPokemon";
 export async function fetchPokemonList(amount = 20, page = 0) {
   const offset = page * amount;
 
-  try {
-    const response = await fetch(
-      `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${amount}`
-    );
+  return new Promise<{ data: any; error?: Error }>(async (resolve, reject) => {
+    try {
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${amount}`
+      );
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      // Array of promises for each Pokemon's details
+      const promises = data.results.map(
+        async (pokemon: { name: string }) =>
+          (await fetchPokemon(pokemon.name)).data
+      );
+
+      // Wait for all promises to resolve
+      const pokemonDetails = await Promise.all(promises);
+
+      // Return the array of Pokemon details
+      resolve({ data: pokemonDetails });
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+      reject(error);
     }
-
-    const data = await response.json();
-
-    // Array of promises for each Pokemon's details
-    const promises = data.results.map(
-      async (pokemon: { name: string }) =>
-        (await fetchPokemon(pokemon.name)).data
-    );
-
-    // Wait for all promises to resolve
-    const pokemonDetails = await Promise.all(promises);
-
-    // Return the array of Pokemon details
-    return { data: pokemonDetails };
-  } catch (error) {
-    console.error("Error fetching data: ", error);
-    throw error;
-  }
+  });
 }
