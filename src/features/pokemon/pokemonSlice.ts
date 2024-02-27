@@ -13,12 +13,16 @@ export interface PockemonListState {
   pokemon: Pokemon[];
   status: "idle" | "loading" | "failed";
   page: number; // For pagination
+  selectedPokemon: Pokemon | null;
+  modalVisible: boolean;
 }
 
 const initialPokemonListState: PockemonListState = {
   pokemon: [],
   status: "idle",
   page: 0, // For pagination
+  selectedPokemon: null,
+  modalVisible: false,
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -51,6 +55,12 @@ export const pokemonSlice = createSlice({
     selectPokemon: (state, action: PayloadAction<Pokemon>) => {
       // Logic to set the selected Pokemon
     },
+    setSelectedPokemon: (state, action: PayloadAction<Pokemon | null>) => {
+      state.selectedPokemon = action.payload;
+    },
+    setModalVisible: (state, action: PayloadAction<boolean>) => {
+      state.modalVisible = action.payload;
+    },
     nextPage: (state) => {
       state.page += 1;
     },
@@ -73,7 +83,8 @@ export const pokemonSlice = createSlice({
   },
 });
 
-export const { selectPokemon, nextPage } = pokemonSlice.actions;
+export const { selectPokemon, nextPage, setSelectedPokemon, setModalVisible } =
+  pokemonSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

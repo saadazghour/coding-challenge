@@ -1,26 +1,23 @@
 import { Pokemon } from "../types/Pokemon";
 import { ReactComponent as BoltIcon } from "../assets/icon-bolt.svg";
 import Card from "./Card";
+import { useDispatch } from "react-redux";
+
+import {
+  setSelectedPokemon,
+  setModalVisible,
+} from "../features/pokemon/pokemonSlice";
 
 type PokemonCardProps = {
   pokemon: Pokemon;
-  setModal?: (value: boolean) => void;
-  setPokemonData?: (data: Pokemon) => void;
 };
 
-export const PokemonCard = ({
-  pokemon,
-  setModal,
-  setPokemonData,
-}: PokemonCardProps) => {
-  const handleClick = async () => {
-    if (setPokemonData) {
-      setPokemonData(pokemon);
-    }
+export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
+  const dispatch = useDispatch();
 
-    if (setModal) {
-      setModal(true);
-    }
+  const handleClick = () => {
+    dispatch(setSelectedPokemon(pokemon));
+    dispatch(setModalVisible(true));
   };
 
   return (
@@ -36,7 +33,7 @@ export const PokemonCard = ({
 
         <button
           onClick={handleClick}
-          className="flex mt-6 items-center justify-center w-full h-12 gap-2 px-10 py-4 text-base font-semibold text-center text-white transition duration-500 ease-in-out transform bg-blue-500 rounded-b-lg saad rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="flex items-center justify-center w-full h-12 gap-2 px-10 py-4 mt-6 text-base font-semibold text-center text-white transition duration-500 ease-in-out transform bg-blue-500 rounded-b-lg saad rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           <BoltIcon />
           View more

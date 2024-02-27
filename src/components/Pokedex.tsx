@@ -3,6 +3,9 @@ import { Pokemon } from "../types/Pokemon";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 import ModalComponent from "./ModalComponent";
+import { useDispatch, useSelector } from "react-redux";
+
+import { RootState } from "../app/store";
 
 type PokedexProps = {
   pokemonList: Pokemon[];
@@ -11,27 +14,26 @@ type PokedexProps = {
   modalOpen: boolean;
 };
 
-export const Pokedex = ({
-  pokemonList,
-  setModal,
-  modalOpen,
-  fetchNextPage,
-}: PokedexProps) => {
+export const Pokedex = ({ setModal, fetchNextPage }: PokedexProps) => {
   // The useInView hook makes it easy to monitor the inView state of your components. Call the useInView hook with the (optional) options you need. It will return an array containing a ref, the inView status and the current entry. Assign the ref to the DOM element you want to monitor, and the hook will report the status.
 
   const { ref, inView } = useInView();
   const [selectedPokemon, setSelectedPokemon] = useState(null);
+
+  //
+  const dispatch = useDispatch();
+  const pokemonList = useSelector((state: RootState) => state.pokemon.pokemon);
+
+  const modalOpen = useSelector(
+    (state: RootState) => state.pokemon.modalVisible
+  );
 
   // Call fetchNextPage when the bottom of the list is in view
   useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
-  }, [inView, fetchNextPage]);
-
-  const handleSetPokemonData = (pokemon: any) => {
-    setSelectedPokemon(pokemon);
-  };
+  }, [inView, dispatch]);
 
   const handleCloseModal = () => {
     setModal(false);
@@ -47,13 +49,8 @@ export const Pokedex = ({
       />
 
       <div className="grid gap-4 row-gap-12 px-6 py-2 m-auto column-gap-2 md:grid-cols-3">
-        {pokemonList.map((pokemon) => (
-          <PokemonCard
-            key={pokemon.id}
-            pokemon={pokemon}
-            setModal={setModal}
-            setPokemonData={handleSetPokemonData}
-          />
+        {pokemonList.map((pokemon: any) => (
+          <PokemonCard key={pokemon.id} pokemon={pokemon} />
         ))}
       </div>
 
