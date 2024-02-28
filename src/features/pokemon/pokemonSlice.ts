@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
-import { Pokemon } from "../../types/Pokemon";
+import { Pokemon, PokemonListResponse } from "../../types/Pokemon";
 import { fetchPokemonList } from "./pokemonAPI";
 
 export interface CounterState {
@@ -35,8 +35,12 @@ const initialPokemonListState: PockemonListState = {
 export const pokemonListAsync = createAsyncThunk(
   "pokemon/fetchList",
   async ({ amount, page }: { amount: number; page: number }) => {
-    const response = await fetchPokemonList(amount, page);
+    const response = (await fetchPokemonList(
+      amount,
+      page
+    )) as PokemonListResponse;
     // The value we return becomes the `fulfilled` action payload
+
     return response.data;
   }
 );
