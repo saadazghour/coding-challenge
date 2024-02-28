@@ -6,6 +6,10 @@ import ModalComponent from "./ModalComponent";
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../app/store";
+import {
+  setModalVisible,
+  setSelectedPokemon,
+} from "../features/pokemon/pokemonSlice";
 
 type PokedexProps = {
   pokemonList: Pokemon[];
@@ -18,9 +22,11 @@ export const Pokedex = ({ setModal, fetchNextPage }: PokedexProps) => {
   // The useInView hook makes it easy to monitor the inView state of your components. Call the useInView hook with the (optional) options you need. It will return an array containing a ref, the inView status and the current entry. Assign the ref to the DOM element you want to monitor, and the hook will report the status.
 
   const { ref, inView } = useInView();
-  const [selectedPokemon, setSelectedPokemon] = useState(null);
 
-  //
+  const selectedPokemon = useSelector(
+    (state: RootState) => state.pokemon.selectedPokemon
+  );
+
   const dispatch = useDispatch();
   const pokemonList = useSelector((state: RootState) => state.pokemon.pokemon);
 
@@ -36,8 +42,9 @@ export const Pokedex = ({ setModal, fetchNextPage }: PokedexProps) => {
   }, [inView, dispatch]);
 
   const handleCloseModal = () => {
-    setModal(false);
-    setSelectedPokemon(null);
+    dispatch(setModalVisible(false));
+    // Dispatch an action to clear the selected Pokémon
+    dispatch(setSelectedPokemon(null));
   };
 
   return (
